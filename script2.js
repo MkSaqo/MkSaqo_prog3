@@ -7,34 +7,35 @@ var http = require('http');
 var kinoneri_linker = require("./data/kinoneri_linker.json");
 var files = require("./data/nkarneri_linker.json");
 var f = "data/kinoneri_anunner.json";
-var uploadDir = "nkarner/";
+var uploadDir = "nkarner/nkar";
 var kinoneri_anunner_arr = [];
 
 forEach(kinoneri_linker, function (link, index, arr) {
     request(link, function (error, response, page) {
         index1 = index;
         kinoneri_anunner_arr.push(collectData(page, link));
-        if (index == arr.length - 1) {
+        // if (index == arr.length - 1) {
             fs.writeFile(f, JSON.stringify(kinoneri_anunner_arr));
-        }
+        // }
 
     });
+   
 
 });
-
 function collectData(innerPage, currURL) {
     var pageData;
     var $ = cheerio.load(innerPage);
-    var name = $(".r-1 .rl-2 [itemprop='name']").text();
-    var country = $(".r-1 .rl-2 [rel='tag']").text();
-    var genres = $(" [itemprop='genre'] ").text();
-    var date = $("[itemprop='dateCreated']").text();
+    var name = $(".rl-2").eq(0).text();
+    var date = $(".rl-2").eq(1).text();
+    var country = $(".rl-2").eq(2).text();
+    var genres = $(".rl-2").eq(3).text();
+    var jam = $(".rl-2").eq(4).text();
+    var prasmotr = $(".rl-2").eq(5).text();
+    var glavni = $(".rl-2").eq(6).text();
     var desc = $("[itemprop='description']").text();
-    var a = country.split(" ");
     // ______________________________________________________________-
     // ______________________________________________________________-
-    var hasce = uploadDir + "nkar" + index1 + ".jpg";
-    var file = fs.createWriteStream(uploadDir + "nkar" + index1 + ".jpg");
+    var file = fs.createWriteStream(uploadDir + index1 + ".jpg");
     var request1 = http.get(files[index1], function (response) {
         response.pipe(file);
     });
@@ -43,14 +44,15 @@ function collectData(innerPage, currURL) {
     pageData = {
         "id": index1,
         "name": name,
-        "country": a[0],
-        "genres": genres,
         "date": date,
+        "country": country,
+        "genres": genres,
+        "jam": jam,
+        "prasmotr": prasmotr,
+        "glavni": glavni,
         "desc": desc,
-        "home_img": hasce,
         "url": currURL
     };
-    // console.log(i + "--------------------------" + name + "-----------------------------------------");
+    console.log(index1 + "--------------------------" + name + "-----------------------------------------");
     return pageData;
 }
-

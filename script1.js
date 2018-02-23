@@ -15,31 +15,31 @@ else {
     var nkarner_arr = [];
 }
 // for (var k=2012; k<= 2012; k++){
-    for (var j=1; j<=3; j++){
+    for (var j=7; j<=10; j++){
     url = "http://gidonline.in/year/in-2017/page/"+j+"/";
         request.get(url, function(error, response, page) {
 
-            var $ = cheerio.load(page);
-            var list = $(".mainlink");
-            var nkar = $(".mainlink img");
-            for (var i = 0; i < list.length; i++) {
-                var fullUrl =  $(list[i]).attr("href");
-                if (kinoner_arr.indexOf(fullUrl) < 0) {
-                    kinoner_arr.push(fullUrl);
-                }
-                
-            }
-            for (var i = 0; i < nkar.length; i++) {
-                var fullUrl = "http://gidonline.in" + $(nkar[i]).attr("src");
-                if (nkarner_arr.indexOf(fullUrl) < 0) {
-                    nkarner_arr.push(fullUrl);
-                }
-                
-            }
-            
-            console.log(kinoner_arr.length + " հատ հղում կա");
-            fs.writeFile(f, JSON.stringify(kinoner_arr));
-            fs.writeFile(n, JSON.stringify(nkarner_arr));
+ var $ = cheerio.load(page);
+ var list = $(".mainlink");
+ var nkar = $(".mainlink img");
+ for (var i = 0; i < list.length; i++) {
+     var fullUrl =  $(list[i]).attr("href");
+     if (kinoner_arr.indexOf(fullUrl) < 0) {
+         kinoner_arr.push(fullUrl);
+     }
+     
+ }
+ for (var i = 0; i < nkar.length; i++) {
+     var fullUrl = "http://gidonline.in" + $(nkar[i]).attr("src");
+     if (nkarner_arr.indexOf(fullUrl) < 0) {
+         nkarner_arr.push(fullUrl);
+     }
+     
+ }
+ 
+ console.log(kinoner_arr.length + " հատ հղում կա");
+ fs.writeFile(f, JSON.stringify(kinoner_arr));
+ fs.writeFile(n, JSON.stringify(nkarner_arr));
 
         });
     }
